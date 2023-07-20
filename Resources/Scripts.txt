@@ -1,0 +1,8 @@
+#Run docker container command
+docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9-management
+
+## Important links
+# PrefetchCount: https://www.youtube.com/watch?v=hi8DjlcbN4A&list=PLalrWAGybpB-UHbRDhFsBgXJM1g6T4IvO&index=8&pp=iAQB
+
+
+

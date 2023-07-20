@@ -1,0 +1,11 @@
+version: '3.4'
+
+services:
+
+  firstrabbitmqapp:
+    image: rabbitmq:3.9-management
+    container_name: firstrabbitmqapp
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"

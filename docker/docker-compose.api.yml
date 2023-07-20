@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+     
+  producer:
+    container_name: producer
+    hostname: producer
+    build:
+      context: ../
+      dockerfile: ./Producer/FirstProducer/Dockerfile
+    restart: always
+    ports:
+     - "9001:80"
+    depends_on:
+     - firstrabbitmqapp
+     
+  consumer1:
+    container_name: consumer1
+    hostname: consumer1
+    build:
+      context: ../
+      dockerfile: ./Consumer/FirstConsumer/Dockerfile
+    restart: always
+    ports:
+     - "3002:80"
+    depends_on:
+     - firstrabbitmqapp
