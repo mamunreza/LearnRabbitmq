@@ -4,8 +4,14 @@ using System.Threading.Tasks;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-//var factory = new ConnectionFactory() { HostName = "localhost" };
-var factory = new ConnectionFactory() { HostName = "firstrabbitmqapp" }; // host name for docker
+Task.Delay(10000).Wait();
+var factory = new ConnectionFactory()
+{
+    HostName = "firstrabbitmqapp",  // host name for docker
+    Port = 5672,
+    UserName = "guest",
+    Password = "guest"
+};
 
 using var connection = factory.CreateConnection();
 
@@ -26,22 +32,27 @@ var random = new Random();
 
 consumer.Received += (model, ea) =>
 {
-    var processingTime = random.Next(100, 300);
+    try
+    {
+        var processingTime = random.Next(1000, 3000);
 
-    var body = ea.Body.ToArray();
+        var body = ea.Body.ToArray();
 
-    var message = Encoding.UTF8.GetString(body);
+        var message = Encoding.UTF8.GetString(body);
 
-    Console.WriteLine($"Recieved: '{message}', will take {processingTime} to process");
+        Console.WriteLine($"Recieved: '{message}', will take {processingTime} to process");
 
-    Task.Delay(TimeSpan.FromMilliseconds(processingTime)).Wait();
+        Task.Delay(TimeSpan.FromMilliseconds(processingTime)).Wait();
 
-    channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+        channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+    }
+    catch (System.Exception ex)
+    {
+        Console.WriteLine("NOT OK!!!");
+        throw;
+    }
 };
 
 channel.BasicConsume(queue: "letterbox", autoAck: false, consumer: consumer);
 
 Console.WriteLine("Consuming");
-
-//Console.ReadKey();
-Console.Read();

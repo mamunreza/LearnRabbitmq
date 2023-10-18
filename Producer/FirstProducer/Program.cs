@@ -3,8 +3,14 @@ using System.Threading.Tasks;
 using System.Text;
 using RabbitMQ.Client;
 
-//var factory = new ConnectionFactory() { HostName = "localhost" };
-var factory = new ConnectionFactory() { HostName = "firstrabbitmqapp" }; // host name for docker
+Task.Delay(10000).Wait();
+var factory = new ConnectionFactory()
+{
+    HostName = "firstrabbitmqapp",  // host name for docker
+    Port = 5672,
+    UserName = "guest",
+    Password = "guest"
+};
 
 using var connection = factory.CreateConnection();
 
@@ -31,7 +37,7 @@ while (true)
 
     Console.WriteLine($"Send message: {message}");
 
-    var waitTime = random.Next(100, 200);
+    var waitTime = random.Next(1000, 2000);
 
     Task.Delay(TimeSpan.FromMilliseconds(waitTime)).Wait();
 

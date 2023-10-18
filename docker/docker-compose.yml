@@ -5,6 +5,9 @@ services:
   firstrabbitmqapp:
     image: rabbitmq:3.9-management
     container_name: firstrabbitmqapp
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
     restart: always
     ports:
       - "15672:15672"
