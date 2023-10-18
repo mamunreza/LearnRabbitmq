@@ -24,7 +24,7 @@ channel.QueueDeclare(
     autoDelete: false,
     arguments: null);
 
-channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
+// channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
 
 var consumer = new EventingBasicConsumer(channel);
 
@@ -34,15 +34,9 @@ consumer.Received += (model, ea) =>
 {
     try
     {
-        var processingTime = random.Next(1000, 3000);
-
         var body = ea.Body.ToArray();
-
         var message = Encoding.UTF8.GetString(body);
-
-        Console.WriteLine($"Recieved: '{message}', will take {processingTime} to process");
-
-        Task.Delay(TimeSpan.FromMilliseconds(processingTime)).Wait();
+        Console.WriteLine($"Recieved: '{message}'");
 
         channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
     }
@@ -53,6 +47,6 @@ consumer.Received += (model, ea) =>
     }
 };
 
-channel.BasicConsume(queue: "letterbox", autoAck: false, consumer: consumer);
+channel.BasicConsume(queue: "letterbox", autoAck: true, consumer: consumer);
 
 Console.WriteLine("Consuming");

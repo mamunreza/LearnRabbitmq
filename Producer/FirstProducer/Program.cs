@@ -37,7 +37,7 @@ while (true)
 
     Console.WriteLine($"Send message: {message}");
 
-    var waitTime = random.Next(1000, 2000);
+    var waitTime = random.Next(100, 200);
 
     Task.Delay(TimeSpan.FromMilliseconds(waitTime)).Wait();
 
